@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+<!-- 	<bean id="hello"  class="kopoInjection.xml.Hello">
+		setName(String msg)
+		<property name="name"  value="kopo" />
+		setPrinter(Printer printer)
+		<property name="printer"  ref="printer" />		
+	</bean> -->
+
+<!-- 	<bean id="hello"  class="kopoInjection.xml.Hello">
+		<constructor-arg index="0" value="kopo"/>
+		<constructor-arg index="1" ref="printer"/>		
+	</bean> -->
+
+	<bean id="hello"  class="kopoInjection.xml.Hello">
+		<constructor-arg name="name" value="kopo"/>
+		<constructor-arg name="printer" ref="printer"/>		
+	</bean>
+	
+	<bean id="collectListInjection"  class="kopoInjection.xml.Hello">
+		<property name = "names">
+			<list>
+				<value>kopo</value>
+				<value>ioc</value>
+				<value>di</value>
+			</list>
+		</property>	
+	</bean>
+			
+	<bean id="printer"  class="kopoInjection.xml.StringPrinter" />
+	<bean id="consolePrinter"   class="kopoInjection.xml.ConsolePrinter" />
+
+	<context:property-placeholder location="classpath:config/value.properties"/>
+
+     <!-- DataSource 설정 -->
+     <bean id="dataSource"  class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+     	<property name="driverClass"   value="${db.driverClass}" />
+     	<property name="url"  value="${db.url}" />
+     	<property name="username"  value="${db.username}"  />
+     	<property name="password"  value="${db.password}" />
+     </bean>
+</beans>
+
+
+
+
+
+
+

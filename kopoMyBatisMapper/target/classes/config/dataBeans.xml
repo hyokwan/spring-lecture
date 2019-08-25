@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!--  component scan 설정 -->
+	<context:component-scan base-package="kopo.userMgmt" />
+	
+	<context:property-placeholder
+	location="classpath:config/datasource.properties" />
+				
+	<bean id ="datasource"
+	class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+	<property name="driverClass" value = "${db.driverClass}" />
+	<property name="url" value="${db.url}" />
+	<property name="username" value = "${db.username}"/>
+	<property name="password" value="${db.password}"/>
+	</bean>
+	
+	<!-- mybatis-spring 설정 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource"  ref="datasource" />
+		<property name="configLocation"   value="classpath:/config/SqlMapConfig.xml" />
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:/config/User.xml</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+	
+	<!--  MapperScannerConfigure  -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name = "basePackage" value="kopo.userMgmt.dao" />
+		<property name = "annotationClass" value = "kopo.userMgmt.dao.MyMapper" />
+	</bean>
+	<!-- Mapper 설정 -->
+<!--   	<bean id = "dbMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name = "mapperInterface" value = "kopo.userMgmt.dao.UserMapper"/>
+		<property name = "sqlSessionTemplate" ref="sqlSession" />
+	</bean>   -->
+</beans>
